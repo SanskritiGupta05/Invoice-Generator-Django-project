@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice System</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+
+</head>
+<body>
+    
+    <nav class="navbar bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand text-white" href="/">Dashboard</a>
+          <div class="d-flex" role="search">
+            
+            <a class="btn btn-outline-warning" href="{% url 'logout' %}">Logout</a>
+          </div>
+        </div>
+      </nav>
+
+
+    {% block body %}
+    
+    
+    
+    {% endblock body %}
+
+
+    <script src="{% static 'js/bootstrap.js' %}"></script>
+    <script src="{% static 'js/jquery.js' %}"></script>
+    <script src="{% static 'js/popper.js' %}"></script>
+</body>
+</html>

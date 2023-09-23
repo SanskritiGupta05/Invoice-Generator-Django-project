@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Login</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+
+</head>
+<body>
+    
+    <div class="container my-5 bg-dark text-white rounded">
+       
+        <form action="" method="post" class="my-5 mx-5 p-5">
+            <h3 class="text-center my-2">Please Login</h3>
+            {% csrf_token %}
+            {{form}}
+
+
+            <button type="submit" class="btn btn-primary btn-md my-3">Login</button>
+        </form>
+    </div>
+
+
+    <script src="{% static 'js/bootstrap.js' %}"></script>
+    <script src="{% static 'js/jquery.js' %}"></script>
+    <script src="{% static 'js/popper.js' %}"></script>
+</body>
+</html>

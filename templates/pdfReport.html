@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+{% load humanize %}
+{% load mathfilters %}
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Netcoreinfo - Report</title>
+  <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2017.1.223/styles/kendo.common.min.css" />
+  <script src="https://kendo.cdn.telerik.com/2017.1.223/js/jszip.min.js"></script>
+  <script src="https://kendo.cdn.telerik.com/2017.1.223/js/kendo.all.min.js"></script>
+
+  <style>
+    #bg-text {
+      color: lightgrey;
+      font-size: 25px;
+      transform: rotate(0deg);
+      -webkit-transform: rotate(0deg);
+    }
+
+    .pdf-page {
+      font-family: "DejaVu Sans", "Arial", sans-serif;
+    }
+
+    page[size="A4"] {
+      width: 790px;
+      height: 1000px;
+    }
+
+    page {
+      background: white;
+      /*      display: block;*/
+      margin: 0px auto;
+    }
+
+    td,
+    th {
+      border: 1px solid grey;
+      text-align: center;
+      padding: 4px;
+    }
+
+    h6 {
+      background-color: rgb(228, 224, 224);
+      margin-left: 4px;
+      font-weight: 700;
+    }
+
+    #spcl {
+      background-color: rgb(230, 230, 132);
+    }
+
+    li {
+      font-weight: lighter;
+      font-family: Verdana, Geneva, Tahoma, sans-serif;
+      list-style-type: disc;
+      list-style-type: disc 8px;
+    }
+
+    .lstLi {
+      list-style-type: none;
+    }
+  </style>
+
+</head>
+
+<body>
+  <div class="mx-8 py-4">
+    <button type="button"
+      class="inline-block px-6 py-2.5 bg-blue-400 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-500 hover:shadow-lg focus:bg-blue-500 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-600 active:shadow-lg transition duration-150 ease-in-out"
+      id="pdf-generate" style="display:inline; margin: 0 auto;">Download PDF </button>
+
+    <a href="{% url 'report_list' %}">
+      <button type="button"
+        class="inline-block px-6 py-2.5 bg-red-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-800 active:shadow-lg transition duration-150 ease-in-out">Go
+        Back</button></a>
+
+  </div>
+
+
+  <br>
+
+  <div class="pdf-page size-a4">
+
+    <page size="A4">
+
+      <div class="flex flex-row p-5 font-sans">
+
+        <div class="flex-1 w-32">
+          <img src="{% static 'images/netcore.png' %}" alt="alsorgLogo"
+            style="height: 100px; width: 150px; margin-left: 12%;">
+          <br>
+          <div class="rounded-md"
+            style="margin-left: 10%; border: 2px solid grey; padding: 4px; display: inline-block; font-size: large; font-weight: 700;">
+            <h2 class="mx-10 text-2xl font-semibold"> INVOICE </h2>
+          </div>
+        </div>
+
+        <div class="flex-1 w-64">
+          <span class="text-gray-900  text-3xl font-bold text-right ml-60">Netcoreinfo Business
+            Group</span><br>
+          <p class="text-gray-800 text-lg ml-60">
+            <!-- <strong> Address:</strong> C-100, Noida sec 33, 201301, Uttar Pradesh, India.
+            <br> -->
+            <strong> Contact:</strong> +91-9267952538, +91-9953045521 <br>
+            <strong> Website:</strong><a href="https://netcoreinfo.com/" target="_blank" class="text-indigo-500">
+              www.netcoreinfo.com <br></a>
+            <strong>Email:</strong> corporate@netcoreinfo.com
+          </p>
+        </div>
+      </div>
+      <hr>
+
+
+      <div class="flex flex-row m-8 font-sans">
+
+        <div class="flex-1 border-2 border-black rounded-md">
+          <!-- <span class="mx-8 font-medium"> #Invoice No - INV{{clientData.id}}</span> -->
+          <!-- <span class="mx-8 font-medium"> #Inovice No - NIBS/10/23-24</span> -->
+          <h4 class="font-semibold mx-4 mt-4"> #Invoice No - INV{{clientData.id}}</h4>
+
+          <ul style="list-style-type:none; font-weight: lighter;" class="mx-8 my-4">
+            <li class="lstLi">Dated: {{companyData.created_at}} </li>
+            <!-- <li class="lstLi">Dated: June 12, 2023, 3:55 p.m. </li> -->
+            <li class="lstLi">Customer GST No: {{companyData.gst_number}}</li>
+            <li class="lstLi">Company Name: {{companyData.company_name}} </li>
+            <li class="lstLi">Handled By: {{companyData.handle_by}}, Mob:{{companyData.phone}} , Email:
+              {{companyData.email}}
+            </li>
+          </ul>
+
+        </div>
+
+        <div class="flex-1 border-2 mx-4 border-black rounded-md">
+
+          <h4 class="font-semibold mx-4 mt-4">CLIENT ADDRESS</h4>
+          <ul style="list-style-type:none; font-weight: lighter;" class="mx-8 my-4">
+            <li class="lstLi"> Company Name: {{clientData.company_name}} </li>
+            <li class="lstLi"> GST No: {{clientData.gst_number}} </li>
+            <li class="lstLi">Country: {{clientData.country}}</li>
+            <li class="lstLi">State: {{clientData.state}} </li>
+            <li class="lstLi">Address: {{clientData.address}} </li>
+          </ul>
+
+        </div>
+      </div>
+
+      <!-- _______ INVOICE REPORT_________ -->
+      <div class="flex flex-col mx-8 border-2 mt-2">
+
+        <div class="bg-gray-100 py-2">
+          <span class="mx-8 my-2 font-semibold text-xl">Invoice Description</span>
+        </div>
+
+
+        <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+          <div class="inline-block min-w-full sm:px-6 lg:px-8">
+            <div class="overflow-hidden">
+              <table class="min-w-full border text-center">
+                <thead class="border-b font-semibold">
+                  <tr>
+                    <th scope="col" class="text-xl text-gray-900 px-2 py-4 border-r">
+                      Sr. No.
+                    </th>
+                    <th scope="col" class="text-xl text-gray-900 px-6 py-4 border-r">
+                      Description of Service
+                    </th>
+                    <th scope="col" class="text-xl  text-gray-900 px-2 py-4 border-r">
+                      Quantity
+                    </th>
+                    <th scope="col" class="text-xl  text-gray-900 px-6 py-4 border-r">
+                      Amount
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+
+
+                  <!-- This is for Services -->
+                  {% for obj in servicesData %}
+                  <tr class="border-b">
+                    <td class="px-2 py-2 whitespace-nowrap text-lg font-medium text-gray-900 border-r">
+                      {{ forloop.counter }}
+                    </td>
+                    <td class="text-lg text-gray-900 font-light px-2 py-2 whitespace-wrap border-r">
+                      {{obj.description}}
+                    </td>
+                    <td class="text-lg text-gray-900 font-light px-2 py-2 whitespace-nowrap border-r">
+                      {{obj.quantity}}
+                    </td>
+                    <td class="text-lg text-gray-900 font-light px-2 py-2 whitespace-nowrap border-r">
+                      Rs. {{obj.amount|intcomma}} &nbsp; <span
+                        class="italic">(Total:{{obj.amount|mul:obj.quantity}})</span>
+
+                    </td>
+                  </tr>
+                  {% endfor %}
+
+                  <tr class="border-b">
+                    <td class="px-2 py-2 whitespace-nowrap text-lg font-medium text-gray-900 border-r">
+                      #
+                    </td>
+                    <td class="text-sm text-gray-900 font-light px-2 py-2 whitespace-nowrap text-lg" colspan="2">
+                      GST 18%
+                    </td>
+                    <td class="text-sm text-gray-900 font-light px-2 py-2 whitespace-nowrap text-lg">
+                      Rs. {{gst_amt|intcomma}}
+
+                    </td>
+                  </tr>
+
+                  <tr class="border-b">
+                    <td
+                      class="px-2 py-2 whitespace-nowrap text-lg font-medium text-gray-900 border-r text-right font-semibold"
+                      colspan="4">
+                      Rs. {{total_amt2|intcomma}} <span class="mr-3">(Total without GST)</span>
+                    </td>
+                  </tr>
+
+                  <tr class="border-b">
+                    <td
+                      class="px-2 py-2 whitespace-nowrap text-lg font-medium text-gray-900 border-r text-right font-semibold"
+                      colspan="4">
+                      Rs. {{price_with_gst|intcomma}} <span class="mr-3">(Grand total with GST)</span>
+                    </td>
+                  </tr>
+
+                  <tr class="border-b">
+                    <td
+                      class="px-2 py-2 whitespace-nowrap text-lg font-medium text-gray-900 border-r text-right font-semibold uppercase"
+                      colspan="4">
+                      Rupee {{word_amt}} <span class="mr-3">(In words)</span>
+                    </td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <br>
+
+      <div class="flex flex-col mx-8 border-2 mt-2">
+        <div class="bg-gray-100 py-2">
+          <span class="mx-8 my-2 font-semibold text-xl"></span>
+        </div>
+        <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+          <div class="inline-block min-w-full sm:px-6 lg:px-8">
+            <div class="overflow-hidden">
+              <table class="min-w-full border text-center">
+                <thead class="border-b font-semibold">
+                  <tr>
+
+                    <th scope="col" class="text-xl text-gray-900 px-6 py-4 border-r text-justify">
+                      Account Details
+                    </th>
+                    <th scope="col" class="text-xl  text-gray-900 px-6 py-4 border-r text-justify">
+                      Special Note
+                    </th>
+
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr class="border-b">
+                    <td class="text-lg text-gray-900 font-light px-6 py-2 whitespace-nowrap border-r text-justify">
+                      <!-- Company: {{companyData.company_name}} <br> -->
+                      Ac. No.: 0{{companyData.account_number}} <br>
+                      IFSC Code: {{companyData.ifsc_code}} <br>
+                      Bank: {{companyData.bank_name}}
+                    </td>
+                    <td
+                      class="text-lg text-gray-900 font-light px-4 py-2 whitespace-nowrap border-r text-justify text-muted">
+                      <p id="bg-text">Hand written special note (if required)</p>
+                      
+                    </td>
+                  </tr>
+                </tbody>
+
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <br>
+
+      <div class="flex flex-row mx-8" style="margin-left: 70%;">
+
+        <div class="basis-1/4 border-2 border-black p-5 w-64 h-32">
+          Auth. Signatory Sign.
+          <hr class="border-r border-black">
+        
+        </div>
+
+        <div class="basis-1/4 border-2 border-black p-5 w-64 h-32">
+          <div class="flex flex-col">
+            Client Sign.
+            <hr class="border-r border-black">
+          </div>
+        </div>
+
+      </div>
+
+      <br>
+      .
+    </page>
+
+  </div>
+
+  <script>
+    kendo.pdf.defineFont({
+      "DejaVu Sans": "https://kendo.cdn.telerik.com/2016.2.607/styles/fonts/DejaVu/DejaVuSans.ttf",
+      "DejaVu Sans|Bold": "https://kendo.cdn.telerik.com/2016.2.607/styles/fonts/DejaVu/DejaVuSans-Bold.ttf",
+      "DejaVu Sans|Bold|Italic": "https://kendo.cdn.telerik.com/2016.2.607/styles/fonts/DejaVu/DejaVuSans-Oblique.ttf",
+      "DejaVu Sans|Italic": "https://kendo.cdn.telerik.com/2016.2.607/styles/fonts/DejaVu/DejaVuSans-Oblique.ttf"
+    });
+  </script>
+
+  <script>
+    function getPDF(selector) {
+      kendo.drawing.drawDOM($(selector)).then(function (group) {
+        kendo.drawing.pdf.saveAs(group, 'Invoice.pdf');
+      });
+    }
+  </script>
+
+  <script type="text/javascript">
+    $('#pdf-generate').click(function () {
+      getPDF('.pdf-page');
+    })
+  </script>
+
+</body>
+
+</html>

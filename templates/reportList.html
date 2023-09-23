@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<div class="px-4 mt-4" id="listDiv" style="min-height: 500px;">
+    <div>
+        <h4 class="text-center alert alert-info">All Clients Detail.</h4>
+
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Company Name</th>
+                        <th scope="col">GST Number</th>
+                        <th scope="col">Address</th>
+                        <th scope="col">Created At</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for obj in allClient reversed %}
+                    <tr>
+                        <th scope="row"> {{obj.id}} </th>
+                        <td> {{obj.company_name}} </td>
+                        <td> {{obj.gst_number}} </td>
+                        <td> {{obj.address}} </td>
+                        <td> {{obj.created_at}} </td>
+                        <td>
+                            <div class="row">
+                                <div class="col"><a href="{% url 'pdf_report' obj.id %}" type="button"
+                                        class="px-1  btn btn-info btn-sm">PDF Report</a></div>
+                            </div> 
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+{% endblock body %}

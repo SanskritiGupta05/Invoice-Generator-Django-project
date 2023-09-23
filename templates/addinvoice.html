@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+
+{% block body %}
+
+<div class="container my-4">
+    <div class="row">
+
+        <div class="col">
+            <a href="{% url 'add_invoice' %}"><h1 class="alert alert-primary text-center">Add Client Details</h1></a>
+            <form action="" method="post">
+                {% csrf_token %}
+                {{clientFm}}
+
+                <button type="submit" class="btn btn-primary btn-md my-2">Save</button>
+
+            </form>
+        </div>
+
+        <div class="col">
+            <a href="{% url 'add_invoice2' %}"><h1 class="alert alert-primary text-center">Add Services</h1></a>
+
+            <form action="" method="post">
+                {% csrf_token %}
+                {{serviceFm}}
+
+                <button type="submit" class="btn btn-primary btn-md my-2">Save</button>
+            </form>
+        </div>
+        
+    </div>
+</div>
+
+
+{% endblock body %}

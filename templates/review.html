@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<div class="container mt-4">
+    <div>
+        <h4 class="text-center alert alert-info">Selected Client Details.</h4>
+
+        <div class='row'>
+            <div class="col-sm-5">
+                <h4 class="text-center alert alert-info">Client Detail</h4>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col"></th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">ID</th>
+                                <td>{{clientData.id}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Company Name</th>
+                                <td>{{clientData.company_name}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">GST Number</th>
+                                <td>{{clientData.gst_number}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Country</th>
+                                <td>{{clientData.country}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">State</th>
+                                <td>{{clientData.state}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Address</th>
+                                <td>{{clientData.address}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Created At</th>
+                                <td> {{clientData.created_at}} </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-sm-5 offset-2">
+                <h4 class="text-center alert alert-info">Service Provider Detail</h4>
+                {% if companyData.Key %}
+
+                <h6 class="text-center mt-4"><span class=" rounded bg-danger px-2 py-1 text-white">Service provider
+                        details not available, Please insert details first.</span></h6>
+
+                {% else %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col"></th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">ID</th>
+                                <td>{{companyData.id}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Company Name</th>
+                                <td>{{companyData.company_name}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Handle By</th>
+                                <td>{{companyData.handle_by}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Bank Name</th>
+                                <td>{{companyData.bank_name}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Account No.</th>
+                                <td>{{companyData.account_number}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">IFSC Code</th>
+                                <td>{{companyData.ifsc_code}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">GST No.</th>
+                                <td>{{companyData.gst_number}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Created At</th>
+                                <td>{{companyData.created_at}}</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
+                {% endif %}
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+
+<div class="container mt-4">
+    <h4 class="text-center alert alert-info">All Services Details</h4>
+    {% if servicesData.Key %}
+
+    <h6 class="text-center mt-4"><span class=" rounded bg-danger px-2 py-1 text-white">No service provided yet, Please
+            insert services first.</span></h6>
+
+    {% else %}
+
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Description</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Created At</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for obj in servicesData reversed %}
+                <tr>
+                    <td> {{obj.description}} </td>
+                    <td> {{obj.quantity}} </td>
+                    <td> {{obj.amount}} </td>
+                    <td> {{obj.created_at}} </td>
+                    <td>
+                        <a href="" class="btn btn-warning btn-sm">Edit</a> &nbsp;
+
+                        <form action="" method="post" class="d-inline">
+                            {% csrf_token %}
+                            <!-- <input type="submit" value="Delete" class="btn btn-danger btn-sm"> -->
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this item?')">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+
+</div>
+
+{% endblock body %}
